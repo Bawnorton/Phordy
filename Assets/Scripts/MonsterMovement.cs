@@ -23,6 +23,10 @@ public class MonsterMovement : MonoBehaviour
         var velocity = rb.velocity;
 
         rb.velocity = new Vector3(horizontal * SPEED, velocity.y, 0);
+        var position = rb.transform.position;
+        position =
+            new Vector3(position.x, position.y, Player.transform.position.z);
+        rb.transform.position = position;
     }
 
     private void OnCollisionEnter(Collision collision)
