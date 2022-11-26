@@ -15,17 +15,16 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        floor = GameObject.Find("Floor");
         canJump = true;
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         var velocity = rb.velocity;
         
         rb.velocity = new Vector3(horizontal * SPEED, velocity.y, vertical * SPEED);
-        if (Input.GetButtonDown("Jump") && canJump)
+        if (Input.GetButton("Jump") && canJump)
         {
             canJump = false;
             rb.velocity = new Vector3(velocity.x, SPEED, velocity.z);
@@ -42,14 +41,22 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
+            Death();
+
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin"))
         {
-            collision.collider.gameObject.SetActive(false);
+            Destroy(collision.collider.gameObject);
             coins++;
         }
         else
             canJump = true;
     }
 
+    private void Death()
+    {
+        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.GetComponent<UIController>().playerDeath();
+    }
 
 }

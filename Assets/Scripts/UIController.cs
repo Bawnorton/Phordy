@@ -12,24 +12,36 @@ public class UIController : MonoBehaviour
 
     //Must be assigned in unity editor
     public Canvas menu;
-    public TMP_Text scoreText;
-    
+    [SerializeField]
+    private TMP_Text scoreText;
+    [SerializeField]
+    private TMP_Text deathText;
 
+    private bool canToggle = true;
     void Start()
     {
         menuActive = false;
         menu.gameObject.SetActive(false);
         player = gameObject.GetComponent<PlayerMovement>();
+        deathText.gameObject.SetActive(false);
+        canToggle = true;
     }
 
     void Update()
     {
         scoreText.text = "Score: " + player.coins * 10;
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel") && canToggle)
         {
             menu.gameObject.SetActive(menuActive = !menuActive);
         }
+    }
+
+    public void playerDeath()
+    {
+        menu.gameObject.SetActive(true);
+        deathText.gameObject.SetActive(true);
+        canToggle = false;
     }
 
     //Button methods
