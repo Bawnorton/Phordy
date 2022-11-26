@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour {
     private const float SPEED = 5f;
 
     private Rigidbody rb;
-
+    private GameObject floor;
     private bool canJump;
 
     [Header("Player Stats")]
