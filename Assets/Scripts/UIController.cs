@@ -12,7 +12,7 @@ public class UIController : MonoBehaviour
 
     //Must be assigned in unity editor
     public Canvas menu;
-    public TextMeshPro scoreText;
+    public TMP_Text scoreText;
     
 
     void Start()
