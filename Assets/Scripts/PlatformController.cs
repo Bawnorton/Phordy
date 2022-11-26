@@ -7,6 +7,8 @@ public class PlatformController : MonoBehaviour {
     private Renderer rend;
     private float width;
     private float relZ;
+    
+    public float startZ;
     private void Start() {
         player = GameObject.Find("Player");
         rend = GetComponent<Renderer>();
@@ -22,7 +24,7 @@ public class PlatformController : MonoBehaviour {
         self.transform.localScale = new Vector3(
             scale.x,
             scale.y,
-            Math.Min(Math.Max(width - Math.Abs(playerPos.z), 0), width));
+            Math.Min(Math.Max(width - Math.Abs(playerPos.z - startZ), 0), width));
         rend.enabled = scale.z > 0;
         self.transform.position = new Vector3(
             pos.x,

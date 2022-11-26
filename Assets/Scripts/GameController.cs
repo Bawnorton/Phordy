@@ -6,10 +6,20 @@ using Random = UnityEngine.Random;
 public class GameController : MonoBehaviour {
     
     public static GameObject floor;
-    public const int MAX_Z = 5;
-    public const int MIN_Z = -5;
+    private int maxZ;
+    private int minZ;
+    
+    private Level lvl1;
     private void Start() {
         floor = GameObject.Find("Floor");
+
+        maxZ = (int) GameObject.Find("Backwall").transform.position.z;
+        minZ = (int) GameObject.Find("Frontwall").transform.position.z;
+
+        int levelWidth = Mathf.Abs(maxZ) + Mathf.Abs(minZ);
+        int levelHeight = 5;
+        int levelLength = 3;
+        lvl1 = new Level("");
     }
 
     private void Update() {
