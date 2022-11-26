@@ -5,22 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ea7b6a8-eb97-4151-a418-56633a4e414b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Materials.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Base.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Base.mat.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Colour.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Colour.mat.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Shaders.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Shaders/RenderBackface.shader" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/Shaders/RenderBackface.shader.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/FloorMovement.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/FloorMovement.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GameController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GameController.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BCHACKS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BCHACKS/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
     </list>
@@ -109,7 +93,7 @@
       <updated>1669404791797</updated>
       <workItem from="1669404793639" duration="110000" />
       <workItem from="1669404917700" duration="15430000" />
-      <workItem from="1669426331832" duration="3496000" />
+      <workItem from="1669426331832" duration="5381000" />
     </task>
     <servers />
   </component>
