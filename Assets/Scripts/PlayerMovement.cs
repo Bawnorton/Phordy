@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        floor = GameObject.Find("Floor");
         canJump = true;
     }
 
