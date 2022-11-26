@@ -3,15 +3,14 @@ using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
+    [Header("Player Stats")]
+    public int coins = 0;
+    
     [SerializeField] private float speed = 5f;
     [SerializeField] private Transform groundCheck;
 
     private Rigidbody rb;
     
-    [Header("Player Stats")]
-    public int coins = 0;
-
-
     private void Start() {
         rb = GetComponent<Rigidbody>();
     }
@@ -31,6 +30,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private bool IsGrounded() {
-        return Physics.Raycast(groundCheck.position, Vector3.down, 0.1f);
+        Vector3 pos = groundCheck.position;
+        Vector3 localScale = transform.localScale;
+        pos.x += localScale.x / 2 - 0.1f;
+        bool front = Physics.Raycast(pos, Vector3.down, 0.1f);
+        pos.x -= localScale.x - 0.2f;
+        bool back = Physics.Raycast(pos, Vector3.down, 0.1f);
+        return front || back;
     }
 }
