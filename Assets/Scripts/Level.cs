@@ -4,15 +4,15 @@ using UnityEngine;
 // first characters are a|b|c| where a is an integer representing the width, b, height, and c, length of the level
 // a b and c can be any integer from 0 to 100
 // then the rest of the string is the level data formatted such that:
-// each platform object is represented by a 1 followed by "(x,y,z)" where x, y, and z are integers representing the position of the platform
-// and then [length,offset] where length is the length of the platform and offset is the offset of the platform from the origin
-// followed by a , and then the next platform object
-// example a 3x3x3 cube with a 1x1x1 platform in the center would be represented as "3|3|3|1(1,1,1)[1,0]," 
-// example a 2x2x2 cube of platforms would be represented as "2|2|2|1(0,0,0)[1,0],1(0,0,1)[1,0],1(0,1,0)[1,0],1(0,1,1)[1,0],1(1,0,0)[1,0],1(1,0,1)[1,0],1(1,1,0)[1,0],1(1,1,1)[1,0],"
-// the last character is a comma, which is ignored
+// each platform object is represented by a 1 followed by "[x,y,z,length,offset]" where x, y, and z are integers representing the position of the platform
+// and where length is the length of the platform and offset is the offset of the platform from the origin
+// followed by a . and then the next platform object
+// example a 3x3x3 cube with a 1x1x1 platform in the center would be represented as "3|3|3|1[1,1,1,1,0]." 
+// example a 2x2x2 cube of platforms would be represented as "2|2|2|1[0,0,0,1,0].1[1,0,0,1,0].1[0,1,0,1,0].1[1,1,0,1,0].1[0,0,1,1,0].1[1,0,1,1,0].1[0,1,1,1,0].1[1,1,1,1,0]."
+// the last character is a period, which is ignored
 public class Level {
     // 3d array of tiles
-    private GameObject[] plaforms;
+    private GameObject[] platforms;
     
     private int levelWidth;
     private int levelHeight;
@@ -24,23 +24,25 @@ public class Level {
         levelWidth = w;
         levelHeight = h;
         levelLength = l;
-        plaforms = new GameObject[levelWidth * levelHeight * levelLength];
+        platforms = new GameObject[levelWidth * levelHeight * levelLength];
         // get the level data
-        string[] levelData = levelString.Split(',');
+        string[] levelData = levelString.Split('.');
         for (int i = 0; i < levelData.Length; i++) {
             // get the platform data
-            string[] platformData = levelData[i].Split('(', ')', '[', ']');
-            // get the platform position
-            string[] platformPosition = platformData[1].Split(',');
-            int x = int.Parse(platformPosition[0]);
-            int y = int.Parse(platformPosition[1]);
-            int z = int.Parse(platformPosition[2]);
-            // get the platform size
-            string[] platformSize = platformData[2].Split(',');
-            int length = int.Parse(platformSize[0]);
-            int offset = int.Parse(platformSize[1]);
+            string[] platformData = levelData[i].Split('[');
+            if(platformData.Length < 2) continue;
+                // get the position data
+            string[] positionData = platformData[1].Split(',');
+            // get the position
+            int x = int.Parse(positionData[0]);
+            int y = int.Parse(positionData[1]);
+            int z = int.Parse(positionData[2]);
+            // get the length
+            int length = int.Parse(positionData[3]);
+            // get the offset
+            int offset = int.Parse(positionData[4].Substring(0, positionData[4].Length - 1));
             // create the platform
-            plaforms[i] = CreatePlatform(x, y, z, length, offset);
+            platforms[i] = CreatePlatform(x, y, z, length, offset);
         }
     }
     public Level(string levelString) {
@@ -62,11 +64,14 @@ public class Level {
         cube.AddComponent<PlatformController>();
         cube.GetComponent<PlatformController>().startZ = offset;
         cube.GetComponent<Renderer>().material = platformMaterial;
+        cube.SetActive(false);
         return cube;
     }
-    
-    public GameObject[] GetPlatforms() {
-        return plaforms;
+
+    public void GenerateLevel() {
+        foreach (var platform in platforms) {
+            if(platform != null) platform.SetActive(true);
+        }
     }
     
     public Vector3 GetLevelSize() {

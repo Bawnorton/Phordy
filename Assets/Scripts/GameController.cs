@@ -18,8 +18,10 @@ public class GameController : MonoBehaviour {
 
         int levelWidth = Mathf.Abs(maxZ) + Mathf.Abs(minZ);
         int levelHeight = 5;
-        int levelLength = 3;
-        lvl1 = new Level("");
+        int levelLength = 30;
+        lvl1 = new Level(levelWidth, levelHeight, levelLength, 
+        "1[1,0,0,3,0]." + "1[3,0,0,4,1]." + "1[3,1,0,2,0].");
+        lvl1.GenerateLevel();
     }
 
     private void Update() {
