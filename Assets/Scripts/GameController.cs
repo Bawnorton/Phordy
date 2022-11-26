@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
-    // fill the scene with cube objects that are randomly positioned and colored
-    // size = x: 2, y: 2, z: 0.45
-    // range = x: -50 to 50, y: 0, z: -50 to 50
-    // make sure they are not overlapping
+    
     void Start() {
         int numCubes = 10;
         for (int i = 0; i < numCubes; i++) {
