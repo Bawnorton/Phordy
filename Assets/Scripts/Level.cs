@@ -30,6 +30,7 @@ public class Level
 
     //prefabs
     private readonly GameObject coin;
+    private readonly GameObject winZone;
 
     private void Init(int w, int h, int l, string levelString)
     {
@@ -75,6 +76,7 @@ public class Level
     public Level(string levelString)
     {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
+        winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         string[] levelDimensions = levelString.Split('|');
         int w = int.Parse(levelDimensions[0]);
         int h = int.Parse(levelDimensions[1]);
@@ -85,6 +87,7 @@ public class Level
     public Level(int w, int h, int l, string levelString)
     {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
+        winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         Init(w, h, l, levelString);
     }
 
@@ -118,6 +121,15 @@ public class Level
             GameObject.Instantiate(coin, new Vector3(x, y, z), Quaternion.identity);
     }
 
+    private void CreateWinZome()
+    {
+        if(winZone != null)
+        {
+            GameObject obj = GameObject.Instantiate(winZone, new Vector3(levelLength, 0, 0), Quaternion.identity);
+            obj.transform.localScale = new Vector3(1,30,levelWidth);
+        }
+    }
+
     public void GenerateLevel()
     {
         foreach (var platform in platforms)
@@ -128,6 +140,7 @@ public class Level
         {
             if (spike != null) spike.SetActive(true);
         }
+        CreateWinZome();
     }
 
     public GameObject[] GetLevelObjects()

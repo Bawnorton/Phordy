@@ -47,4 +47,13 @@ public class PlayerMovement : MonoBehaviour {
                Physics.Raycast(position + scale.z * forward, Vector3.down, scale.y * 0.5f) ||
                Physics.Raycast(position - scale.z * forward, Vector3.down, scale.y * 0.5f);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Coin"))
+        {
+            Destroy(other.gameObject);
+            coins++;
+        }
+    }
 }

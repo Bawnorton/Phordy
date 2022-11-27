@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
                            ".1[25,0,0,2,0].1[27,1,0,3,1].1[28,2,-2,5,-1]" +
                            ".1[29,1,0,10,0].1[29,2,0,10,0].1[29,3,0,10,0]";
 
-        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[11,2,4,0,0].2[27,0,0,0,0]";
+        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[11,2,4,0,0]";
 
         lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
         lvl1.GenerateLevel();

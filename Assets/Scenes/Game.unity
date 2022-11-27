@@ -724,9 +724,9 @@ GameObject:
   - component: {fileID: 970713101}
   - component: {fileID: 970713100}
   - component: {fileID: 970713099}
-  - component: {fileID: 970713105}
   - component: {fileID: 970713103}
-  - component: {fileID: 970713104}
+  - component: {fileID: 970713098}
+  - component: {fileID: 970713097}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -746,7 +746,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9dd80282dc17412584640f443595c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPEED: 7
+  rb: {fileID: 970713098}
+  speed: 5
+  jumpForce: 6
   coins: 0
 --- !u!54 &970713098
 Rigidbody:
