@@ -22,25 +22,23 @@ public class Level {
     
     // 3d array of tiles
     private GameObject[] platforms;
-    private GameObject[] spikes;
 
     private int levelWidth;
     private int levelHeight;
     private int levelLength;
 
     private readonly Material platformMaterial = GameObject.Find("Platform").GetComponent<Renderer>().material;
-    private readonly Material spikeMaterial = GameObject.Find("Spike").GetComponent<Renderer>().material;
 
     //prefabs
     private readonly GameObject coin;
     private readonly GameObject winZone;
+    private readonly GameObject spike;
 
     private void Init(int w, int h, int l, string levelString) {
         levelWidth = w;
         levelHeight = h;
         levelLength = l;
         platforms = new GameObject[levelWidth * levelHeight * levelLength];
-        spikes = new GameObject[levelWidth * levelHeight * levelLength];
 
         // get the level data
         string[] levelData = levelString.Split('.');
@@ -57,7 +55,10 @@ public class Level {
                     platforms[i] = CreatePlatform(x, y, z, length, offset);
                 }
                 else if (type == "0") {
-                    spikes[i] = CreateSpike(x, y, z, length, offset);
+                    int halfLength = length / 2;
+                    for(int j = 0; j < length; j++) {
+                        CreateSpike(x, y, z + j - halfLength);
+                    }
                 }
                 else if (type == "2") {
                     coinData += levelData[i] + ".";
@@ -75,6 +76,7 @@ public class Level {
     public Level(string levelString) {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
         winZone = Resources.Load<GameObject>("Prefabs/WinZone");
+        spike = Resources.Load<GameObject>("Prefabs/Spike");
         string[] levelDimensions = levelString.Split('|');
         int w = int.Parse(levelDimensions[0]);
         int h = int.Parse(levelDimensions[1]);
@@ -85,6 +87,7 @@ public class Level {
     public Level(int w, int h, int l, string levelString) {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
         winZone = Resources.Load<GameObject>("Prefabs/WinZone");
+        spike = Resources.Load<GameObject>("Prefabs/Spike");
         Init(w, h, l, levelString);
     }
 
@@ -100,17 +103,8 @@ public class Level {
         return cube;
     }
 
-    private GameObject CreateSpike(int x, int y, int z, int length, int offset) {
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = new Vector3(x, y - 0.45f, z);
-        cube.transform.localScale = new Vector3(1, 0.1f, length);
-        cube.AddComponent<PlatformController>();
-        cube.GetComponent<PlatformController>().startZ = offset;
-        cube.GetComponent<Renderer>().material = spikeMaterial;
-        cube.GetComponent<BoxCollider>().isTrigger = true;
-        cube.layer = LayerMask.NameToLayer("Spike");
-        cube.SetActive(false);
-        return cube;
+    private void CreateSpike(int x, int y, int z) {
+        if (spike != null) Object.Instantiate(spike, new Vector3(x, y - 0.16f, z), Quaternion.identity);
     }
 
     private void CreateCoin(int x, int y, int z) {
@@ -144,19 +138,12 @@ public class Level {
         foreach (var platform in platforms) {
             if (platform != null) platform.SetActive(true);
         }
-        foreach (var spike in spikes) {
-            if (spike != null) spike.SetActive(true);
-        }
         CreateWinZone();
     }
     
     public void DisableLevel() {
         foreach (var platform in platforms) {
             if (platform != null) platform.SetActive(false);
-        }
-
-        foreach (var spike in spikes) {
-            if (spike != null) spike.SetActive(false);
         }
     }
 }

@@ -6,11 +6,6 @@ public class MusicPlayer : MonoBehaviour
 {
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    private void Start()
-    {
-        
+        DontDestroyOnLoad(gameObject);
     }
 }

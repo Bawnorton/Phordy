@@ -13,6 +13,10 @@ public class LevelClear : MonoBehaviour {
         scoreText.text = "Score: " + ScoreController.score;
     }
 
+    public void Continue() {
+        SceneManager.LoadScene("Scenes/LevelSelect");
+    }
+
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("Scenes/MainMenu"); // main menu
