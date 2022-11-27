@@ -9,9 +9,11 @@ public class MonsterMovement : MonoBehaviour
 
     // private GameObject floor;
     private Rigidbody rb;
+    private GameObject Player;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        Player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -21,5 +23,17 @@ public class MonsterMovement : MonoBehaviour
         var velocity = rb.velocity;
 
         rb.velocity = new Vector3(horizontal * SPEED, velocity.y, 0);
+        var position = rb.transform.position;
+        position =
+            new Vector3(position.x, position.y, Player.transform.position.z);
+        rb.transform.position = position;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject == Player.gameObject)
+        {
+            Debug.Log("Game Over");
+        }
     }
 }
