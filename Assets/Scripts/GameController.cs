@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour {
 
     public static Level currentLevel;
     private void Start() {
+        GameObject c = GameObject.FindGameObjectWithTag("MainCamera");
+        c.GetComponent<SimulateColorBlindness>().SetMode(SaveData.instance.colourCorrection);
+        
         int loadedLevel = LevelSelectMenu.num;
         pauseMenuScript = pauseMenu.GetComponent<PauseMenu>();
         ScoreController.score = 0;

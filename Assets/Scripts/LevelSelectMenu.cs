@@ -8,6 +8,11 @@ public class LevelSelectMenu : MonoBehaviour
 {
     public static int num;
 
+    private void Start() {
+        // find object w/ tag "MainCamera"
+        GameObject c = GameObject.FindGameObjectWithTag("MainCamera");
+        c.GetComponent<SimulateColorBlindness>().SetMode(SaveData.instance.colourCorrection);
+    }
     public void Clicked(int n) {
         num = n;
         SceneManager.LoadScene("Scenes/Game");

@@ -13,6 +13,9 @@ public class LevelClear : MonoBehaviour {
     public void Start() {
         scoreText.text = "Score: " + ScoreController.score;
         deathText.text = "Deaths: " + ScoreController.deaths;
+        
+        GameObject c = GameObject.FindGameObjectWithTag("MainCamera");
+        c.GetComponent<SimulateColorBlindness>().SetMode(SaveData.instance.colourCorrection);
     }
 
     public void Continue() {
