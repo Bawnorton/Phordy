@@ -12,7 +12,7 @@ public class LevelClear : MonoBehaviour {
     
     public void Start() {
         scoreText.text = "Score: " + ScoreController.score;
-        deathText.text = "Deaths: " + ScoreController.deaths;git
+        deathText.text = "Deaths: " + ScoreController.deaths;
     }
 
     public void Continue() {
