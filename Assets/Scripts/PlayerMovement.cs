@@ -3,20 +3,16 @@ using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
-    private const float SPEED = 5f;
-
-    private Rigidbody rb;
-    private GameObject floor;
-    private bool canJump;
-
     [Header("Player Stats")]
     public int coins = 0;
+    
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private Transform groundCheck;
 
-
+    private Rigidbody rb;
+    
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        floor = GameObject.Find("Floor");
-        canJump = true;
     }
 
     private void Update() {
@@ -24,32 +20,22 @@ public class PlayerMovement : MonoBehaviour {
         var vertical = Input.GetAxis("Vertical");
         var velocity = rb.velocity;
         
-        rb.velocity = new Vector3(horizontal * SPEED, velocity.y, vertical * SPEED);
-        if (Input.GetButtonDown("Jump") && canJump)
-        {
-            canJump = false;
-            rb.velocity = new Vector3(velocity.x, SPEED, velocity.z);
+        rb.velocity = new Vector3(horizontal * speed, velocity.y, vertical * speed);
+        if (Input.GetButtonDown("Jump") && IsGrounded()) {
+            rb.velocity = new Vector3(velocity.x, speed, velocity.z);
         }
 
         var floorPos = GameController.floor.transform.position;
         GameController.floor.transform.position = new Vector3(floorPos.x, floorPos.y, rb.position.z);
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if(collision.collider.gameObject.layer != LayerMask.NameToLayer("Coin"))
-            canJump = false;
+    private bool IsGrounded() {
+        Vector3 pos = groundCheck.position;
+        Vector3 localScale = transform.localScale;
+        pos.x += localScale.x / 2 - 0.1f;
+        bool front = Physics.Raycast(pos, Vector3.down, 0.1f);
+        pos.x -= localScale.x - 0.2f;
+        bool back = Physics.Raycast(pos, Vector3.down, 0.1f);
+        return front || back;
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin"))
-        {
-            collision.collider.gameObject.SetActive(false);
-            coins++;
-        }
-        else
-            canJump = true;
-    }
-
-
 }
