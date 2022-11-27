@@ -316,7 +316,6 @@ GameObject:
   - component: {fileID: 970713101}
   - component: {fileID: 970713100}
   - component: {fileID: 970713099}
-  - component: {fileID: 970713103}
   - component: {fileID: 970713098}
   - component: {fileID: 970713097}
   m_Layer: 0
@@ -349,7 +348,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970713096}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 1
   m_Drag: 1
   m_AngularDrag: 0
   m_UseGravity: 1
@@ -1211,7 +1210,7 @@ GameObject:
   - component: {fileID: 1871512493}
   - component: {fileID: 1871512492}
   - component: {fileID: 1871512491}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}

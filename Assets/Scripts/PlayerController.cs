@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-
-public class PlayerMovement : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
     
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed = 6f;
@@ -51,9 +50,13 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             ScoreController.score += 1;
             Destroy(other.gameObject);
+        } else if(other.name == "Spike") {
+            rb.transform.position = new Vector3(-5, 1, 0);
+            ScoreController.score = 0;
+            GameController.currentLevel.RegenerateCoins();
         }
     }
 }

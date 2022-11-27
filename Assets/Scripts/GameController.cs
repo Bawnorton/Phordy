@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
@@ -11,14 +9,20 @@ public class GameController : MonoBehaviour
     private Level lvl0;
     private Level lvl1;
     private Level lvl2;
-    private Level[] Levels;
+    private static Level[] levels;
+
+    public static Level currentLevel;
     private void Start() {
+        int loadedLevel = LevelSelectMenu.num;
+        ScoreController.score = 0;
+        
         maxZ = (int)GameObject.Find("Backwall").transform.position.z;
         minZ = (int)GameObject.Find("Frontwall").transform.position.z;
 
         int levelWidth = Mathf.Abs(maxZ) + Mathf.Abs(minZ);
         int levelHeight = 5;
         int levelLength = 30;
+        
         string spikeFloor = String.Format(
             "0[1,0,0,{0},0].0[2,0,0,{0},0]" +
             ".0[3,0,0,{0},0].0[4,0,0,{0},0].0[5,0,0,{0},0]" +
@@ -32,6 +36,7 @@ public class GameController : MonoBehaviour
             ".0[27,0,0,{0},0].0[28,0,0,{0},0].0[29,0,0,{0},0]" +
             ".0[30,0,0,{0},0]", levelWidth
         );
+        
         string platforms = ".1[0,0,0,2,0].1[2,1,0,3,1].1[3,1,0,4,2]" +
                            ".1[5,2,1,4,4].1[5,1,1,10,-5].1[11,1,0,6,4]" +
                            ".1[13,2,0,3,0].1[14,2,0,3,2].1[15,2,0,3,-2]" +
@@ -39,18 +44,16 @@ public class GameController : MonoBehaviour
                            ".1[25,0,0,2,0].1[27,1,0,3,1].1[28,2,-2,5,-1]" +
                            ".1[29,1,0,10,0].1[29,2,0,10,0].1[29,3,0,10,0]";
        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[5,3,-6,0,0].2[11,2,4,0,0].2[27,5,0,0,0]";
-       
 
         lvl0 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
-        lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
-        lvl2 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
-        Levels = new[] { lvl0, lvl1, lvl2 };
-        lvl1.GenerateLevel();
+        // lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
+        // lvl2 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
+        levels = new[] { lvl0 };
+        LoadLevel(loadedLevel);   
     }
 
-    public void LoadLevel(int num)
-    {
-        Level SelectedLevel = Levels[num];
-        SelectedLevel.GenerateLevel();
+    public static void LoadLevel(int num) {
+        currentLevel = levels[num];
+        currentLevel.ActivateLevel();
     }
 }
