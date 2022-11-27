@@ -2,6 +2,9 @@
 
 Phordy is a 4D platformer made by Ben Norton, Ankkit Prakash, and Jayden Jayawardhena
 
+### Video
+https://youtu.be/nJGAd0IBd7U
+
 ## Inspiration
 
 This was inspired by the game Miegakure, which is a 4D puzzle game.
