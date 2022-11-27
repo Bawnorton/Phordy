@@ -9,8 +9,12 @@ public class GameController : MonoBehaviour {
     private int maxZ;
     private int minZ;
     
+    private Level lvl0;
     private Level lvl1;
+    private Level lvl2;
+    private Level[] Levels;
     private void Start() {
+        
         floor = GameObject.Find("Floor");
 
         maxZ = (int) GameObject.Find("Backwall").transform.position.z;
@@ -38,9 +42,19 @@ public class GameController : MonoBehaviour {
                            ".1[13,4,0,3,0].1[14,4,0,3,2].1[18,2,-1,6,-3]" +
                            ".1[25,0,0,2,0].1[27,1,0,3,1].1[28,2,-2,5,-1]" +
                            ".1[29,1,0,10,0].1[29,2,0,10,0].1[29,3,0,10,0]";
+        lvl0 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms);
         lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms);
-        lvl1.GenerateLevel();
+        lvl2 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms);
+        Levels = new[] { lvl0, lvl1, lvl2 };
+        
     }
+
+    public void LoadLevel(int num)
+    {
+        Level SelectedLevel = Levels[num];
+        SelectedLevel.GenerateLevel();
+    }
+    
 
     private void Update() {
         
