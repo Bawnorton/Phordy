@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3246559613616391362
+--- !u!1 &2475335638808315520
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3246559613616391374}
-  - component: {fileID: 3246559613616391361}
-  - component: {fileID: 3246559613616391360}
-  - component: {fileID: 3246559613616391372}
-  - component: {fileID: 3246559613616391373}
-  m_Layer: 7
-  m_Name: Coin
+  - component: {fileID: 2475335638808315532}
+  - component: {fileID: 2475335638808315523}
+  - component: {fileID: 2475335638808315522}
+  - component: {fileID: 2475335638808315521}
+  - component: {fileID: 5430616772398651882}
+  m_Layer: 0
+  m_Name: WinZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3246559613616391374
+--- !u!4 &2475335638808315532
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246559613616391362}
+  m_GameObject: {fileID: 2475335638808315520}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.422433, y: 0.53, z: 0}
-  m_LocalScale: {x: 70, y: 70, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3246559613616391361
+--- !u!33 &2475335638808315523
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246559613616391362}
-  m_Mesh: {fileID: 2534964839176971238, guid: 9cbe6d515bdea38478f81fd8c2cfaa19, type: 3}
---- !u!23 &3246559613616391360
+  m_GameObject: {fileID: 2475335638808315520}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &2475335638808315522
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246559613616391362}
+  m_GameObject: {fileID: 2475335638808315520}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 513c02f5f2d98674f80eb1abf7e62093, type: 2}
+  - {fileID: 2100000, guid: 883ccdff1c16ccc41b15687163d3c239, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,30 +85,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3246559613616391372
+--- !u!65 &2475335638808315521
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475335638808315520}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5430616772398651882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246559613616391362}
+  m_GameObject: {fileID: 2475335638808315520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62da74c695d4bc4fa466caa8defc9cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 22b400d1d16b2b9469432561ce51c022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 1
-  width: 1
---- !u!135 &3246559613616391373
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3246559613616391362}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.010000001
-  m_Center: {x: 0, y: 0, z: 0}

@@ -56,4 +56,13 @@ public class PlayerMovement : MonoBehaviour {
             Destroy(collision.gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Coin"))
+        {
+            Destroy(other.gameObject);
+            coins++;
+        }
+    }
 }
