@@ -113,7 +113,7 @@ public class Level {
     {
         if(winZone != null)
         {
-            GameObject obj = GameObject.Instantiate(winZone, new Vector3(levelLength, 0, 0), Quaternion.identity);
+            GameObject obj = Object.Instantiate(winZone, new Vector3(levelLength, 0, 0), Quaternion.identity);
             obj.transform.localScale = new Vector3(1,30,levelWidth);
         }
     }

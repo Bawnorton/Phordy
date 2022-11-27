@@ -50,10 +50,10 @@ public class PlayerMovement : MonoBehaviour {
             
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Coin")) {
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             ScoreController.score += 1;
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
         }
     }
 }
