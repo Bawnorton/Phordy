@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour {
 
     [SerializeField] private Slider volume;
     public void Play() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Scenes/LevelSelect");
     }
 
     public void Quit() {

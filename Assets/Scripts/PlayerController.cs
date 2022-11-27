@@ -1,15 +1,16 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-
-public class PlayerMovement : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
     
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed = 6f;
     [SerializeField] private float jumpForce = 8f;
     
     private Vector3 input;
+    private bool canCollide = true;
+    
 
     private void Update() {
         GatherInput();
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour {
         Transform t = transform;
         Vector3 result = t.position + speed * Time.deltaTime * (t.forward * input.z + t.right * input.x);
         rb.MovePosition(result);
+        canCollide = true;
     }
     
     private void Jump() {
@@ -49,11 +51,17 @@ public class PlayerMovement : MonoBehaviour {
             || Physics.Raycast(pos - Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2);
             
     }
-
+    
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             ScoreController.score += 1;
             Destroy(other.gameObject);
+        } else if(other.gameObject.layer == LayerMask.NameToLayer("Spike") && canCollide) {
+            rb.transform.position = new Vector3(-5, 1, 0);
+            ScoreController.score = 0;
+            ScoreController.deaths += 1;
+            GameController.currentLevel.RegenerateCoins();
+            canCollide = false;
         }
     }
 }

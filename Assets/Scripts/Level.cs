@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -17,6 +18,8 @@ using Object = UnityEngine.Object;
 //
 //COINS: use 2 followed by [x,y,z,a,b] for coins. Values a, b are ignored but still need to be present for formatting.
 public class Level {
+    private string coinData = "";
+    
     // 3d array of tiles
     private GameObject[] platforms;
     private GameObject[] spikes;
@@ -57,6 +60,7 @@ public class Level {
                     spikes[i] = CreateSpike(x, y, z, length, offset);
                 }
                 else if (type == "2") {
+                    coinData += levelData[i] + ".";
                     CreateCoin(x, y, z);
                 }
             }
@@ -65,6 +69,7 @@ public class Level {
                 Debug.Log(levelString + " at " + levelData[i]);
             }
         }
+        coinData = coinData.Substring(0, coinData.Length - 1);
     }
 
     public Level(string levelString) {
@@ -90,6 +95,7 @@ public class Level {
         cube.AddComponent<PlatformController>();
         cube.GetComponent<PlatformController>().startZ = offset;
         cube.GetComponent<Renderer>().material = platformMaterial;
+        cube.name = "Platform";
         cube.SetActive(false);
         return cube;
     }
@@ -101,6 +107,8 @@ public class Level {
         cube.AddComponent<PlatformController>();
         cube.GetComponent<PlatformController>().startZ = offset;
         cube.GetComponent<Renderer>().material = spikeMaterial;
+        cube.GetComponent<BoxCollider>().isTrigger = true;
+        cube.layer = LayerMask.NameToLayer("Spike");
         cube.SetActive(false);
         return cube;
     }
@@ -109,32 +117,46 @@ public class Level {
         if (coin != null) Object.Instantiate(coin, new Vector3(x, y, z), Quaternion.identity);
     }
 
-    private void CreateWinZome()
-    {
-        if(winZone != null)
-        {
+    private void CreateWinZone() {
+        if(winZone != null) {
             GameObject obj = Object.Instantiate(winZone, new Vector3(levelLength, 0, 0), Quaternion.identity);
             obj.transform.localScale = new Vector3(1,30,levelWidth);
         }
     }
 
-    public void GenerateLevel()
+    public void RegenerateCoins() {
+        foreach (GameObject c in GameObject.FindGameObjectsWithTag("Coin")) {
+            Object.Destroy(c);
+        }
+        
+        string[] coins = coinData.Split(".");
+        foreach (var coinString in coins) {
+            string[] data = coinString.Substring(2, coinString.Length - 3).Split(',');
+            int x = int.Parse(data[0]);
+            int y = int.Parse(data[1]);
+            int z = int.Parse(data[2]);
+            CreateCoin(x, y, z);
+        }
+    }
+
+    public void ActivateLevel()
     {
-        foreach (var platform in platforms)
-        {
+        foreach (var platform in platforms) {
             if (platform != null) platform.SetActive(true);
         }
-
         foreach (var spike in spikes) {
             if (spike != null) spike.SetActive(true);
         }
-        CreateWinZome();
+        CreateWinZone();
     }
+    
+    public void DisableLevel() {
+        foreach (var platform in platforms) {
+            if (platform != null) platform.SetActive(false);
+        }
 
-    public GameObject[] GetLevelObjects() {
-        GameObject[] level = new GameObject[platforms.Length + spikes.Length];
-        platforms.CopyTo(level, 0);
-        spikes.CopyTo(level, platforms.Length);
-        return level;
+        foreach (var spike in spikes) {
+            if (spike != null) spike.SetActive(false);
+        }
     }
 }

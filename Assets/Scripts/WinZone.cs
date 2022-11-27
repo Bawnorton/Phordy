@@ -5,11 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class WinZone : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.name == "Player")
-        {
-            SceneManager.LoadScene(3,LoadSceneMode.Single);
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.name == "Player") {
+            SceneManager.LoadScene("Scenes/LevelClear");
         }
     }
 }
