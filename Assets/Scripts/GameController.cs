@@ -7,8 +7,11 @@ public class GameController : MonoBehaviour
 {
     private int maxZ;
     private int minZ;
-
+    
+    private Level lvl0;
     private Level lvl1;
+    private Level lvl2;
+    private Level[] Levels;
     private void Start() {
         maxZ = (int)GameObject.Find("Backwall").transform.position.z;
         minZ = (int)GameObject.Find("Frontwall").transform.position.z;
@@ -35,14 +38,19 @@ public class GameController : MonoBehaviour
                            ".1[13,4,0,3,0].1[14,4,0,3,2].1[18,2,-1,6,-3]" +
                            ".1[25,0,0,2,0].1[27,1,0,3,1].1[28,2,-2,5,-1]" +
                            ".1[29,1,0,10,0].1[29,2,0,10,0].1[29,3,0,10,0]";
+       string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[5,3,-6,0,0].2[11,2,4,0,0].2[27,5,0,0,0]";
+       
 
-        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[5,3,-6,0,0].2[11,2,4,0,0].2[27,5,0,0,0]";
-
+        lvl0 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
         lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
+        lvl2 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
+        Levels = new[] { lvl0, lvl1, lvl2 };
         lvl1.GenerateLevel();
     }
 
-    private void Update() {
-
+    public void LoadLevel(int num)
+    {
+        Level SelectedLevel = Levels[num];
+        SelectedLevel.GenerateLevel();
     }
 }
