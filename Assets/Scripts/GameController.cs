@@ -5,15 +5,11 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    public static GameObject floor;
     private int maxZ;
     private int minZ;
 
     private Level lvl1;
-    private void Start()
-    {
-        floor = GameObject.Find("Floor");
-
+    private void Start() {
         maxZ = (int)GameObject.Find("Backwall").transform.position.z;
         minZ = (int)GameObject.Find("Frontwall").transform.position.z;
 
@@ -31,23 +27,22 @@ public class GameController : MonoBehaviour
             ".0[21,0,0,{0},0].0[22,0,0,{0},0].0[23,0,0,{0},0]" +
             ".0[24,0,0,{0},0].0[25,0,0,{0},0].0[26,0,0,{0},0]" +
             ".0[27,0,0,{0},0].0[28,0,0,{0},0].0[29,0,0,{0},0]" +
-            ".0[30,0,0,{0},0].", levelWidth
+            ".0[30,0,0,{0},0]", levelWidth
         );
-        string platforms = "1[0,0,0,2,0].1[2,1,0,3,1].1[3,1,0,4,2]" +
+        string platforms = ".1[0,0,0,2,0].1[2,1,0,3,1].1[3,1,0,4,2]" +
                            ".1[5,2,1,4,4].1[5,1,1,10,-5].1[11,1,0,6,4]" +
                            ".1[13,2,0,3,0].1[14,2,0,3,2].1[15,2,0,3,-2]" +
                            ".1[13,4,0,3,0].1[14,4,0,3,2].1[18,2,-1,6,-3]" +
                            ".1[25,0,0,2,0].1[27,1,0,3,1].1[28,2,-2,5,-1]" +
                            ".1[29,1,0,10,0].1[29,2,0,10,0].1[29,3,0,10,0]";
 
-        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[11,2,4,0,0]";
+        string coins = ".2[0,1,0,0,0].2[2,2,0,0,0].2[5,4,5,0,0].2[5,3,-6,0,0].2[11,2,4,0,0].2[27,5,0,0,0]";
 
         lvl1 = new Level(levelWidth, levelHeight, levelLength, spikeFloor + platforms + coins);
         lvl1.GenerateLevel();
     }
 
-    private void Update()
-    {
+    private void Update() {
 
     }
 }

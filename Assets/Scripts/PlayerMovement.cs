@@ -6,9 +6,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
     
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float jumpForce = 6f;
-    [SerializeField] public int coins;
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private float jumpForce = 8f;
+    
     private Vector3 input;
 
     private void Update() {
@@ -36,16 +36,25 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = Vector3.up * jumpForce;
     }
     
-    private bool IsGrounded() { 
+    private bool IsGrounded() {
         Transform t = transform;
+        Vector3 pos = t.position;
         Vector3 scale = t.localScale;
-        Vector3 position = t.position;
-        Vector3 right = t.right;
-        Vector3 forward = t.forward;
-        return Physics.Raycast(position + scale.x * right, Vector3.down, scale.y * 0.5f) ||
-               Physics.Raycast(position - scale.x * right, Vector3.down, scale.y * 0.5f) ||
-               Physics.Raycast(position + scale.z * forward, Vector3.down, scale.y * 0.5f) ||
-               Physics.Raycast(position - scale.z * forward, Vector3.down, scale.y * 0.5f);
+        float height = scale.y;
+        float width = scale.x;
+        return Physics.Raycast(pos, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos + Vector3.right * height / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos - Vector3.right * width / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos + Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos - Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2);
+            
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.layer == 7) {
+            ScoreController.score += 1;
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 // levelString is a string of 0s and 1s, with 0s being spikes and 1s being platforms
 // first characters are a|b|c| where a is an integer representing the width, b, height, and c, length of the level
@@ -15,8 +16,7 @@ using UnityEngine;
 // the last character is a period, which is ignored
 //
 //COINS: use 2 followed by [x,y,z,a,b] for coins. Values a, b are ignored but still need to be present for formatting.
-public class Level
-{
+public class Level {
     // 3d array of tiles
     private GameObject[] platforms;
     private GameObject[] spikes;
@@ -32,8 +32,7 @@ public class Level
     private readonly GameObject coin;
     private readonly GameObject winZone;
 
-    private void Init(int w, int h, int l, string levelString)
-    {
+    private void Init(int w, int h, int l, string levelString) {
         levelWidth = w;
         levelHeight = h;
         levelLength = l;
@@ -42,39 +41,33 @@ public class Level
 
         // get the level data
         string[] levelData = levelString.Split('.');
-        for (int i = 0; i < levelData.Length; i++)
-        {
+        for (int i = 0; i < levelData.Length; i++) {
             string type = levelData[i].Substring(0, 1);
             string[] data = levelData[i].Substring(2, levelData[i].Length - 3).Split(',');
-            try
-            {
+            try {
                 int x = int.Parse(data[0]);
                 int y = int.Parse(data[1]);
                 int z = int.Parse(data[2]);
                 int length = int.Parse(data[3]);
                 int offset = int.Parse(data[4]);
-                if (type == "1")
-                {
+                if (type == "1") {
                     platforms[i] = CreatePlatform(x, y, z, length, offset);
                 }
-                else if (type == "0")
-                {
+                else if (type == "0") {
                     spikes[i] = CreateSpike(x, y, z, length, offset);
                 }
-                else if (type == "2")
-                {
-                  CreateCoin(x, y, z);
+                else if (type == "2") {
+                    CreateCoin(x, y, z);
                 }
             }
-            catch (FormatException)
-            {
+            catch (FormatException) {
                 Debug.Log("Level data is not formatted correctly");
                 Debug.Log(levelString + " at " + levelData[i]);
             }
         }
     }
-    public Level(string levelString)
-    {
+
+    public Level(string levelString) {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
         winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         string[] levelDimensions = levelString.Split('|');
@@ -84,18 +77,16 @@ public class Level
         Init(w, h, l, levelDimensions[3]);
     }
 
-    public Level(int w, int h, int l, string levelString)
-    {
+    public Level(int w, int h, int l, string levelString) {
         coin = Resources.Load<GameObject>("Prefabs/Coin");
         winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         Init(w, h, l, levelString);
     }
 
-    private GameObject CreatePlatform(int x, int y, int z, int length, int offset)
-    {
+    private GameObject CreatePlatform(int x, int y, int z, int length, int offset) {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = new Vector3(x, y, z);
-        cube.transform.localScale = new Vector3(1,1, length);
+        cube.transform.localScale = new Vector3(1, 1, length);
         cube.AddComponent<PlatformController>();
         cube.GetComponent<PlatformController>().startZ = offset;
         cube.GetComponent<Renderer>().material = platformMaterial;
@@ -103,8 +94,7 @@ public class Level
         return cube;
     }
 
-    private GameObject CreateSpike(int x, int y, int z, int length, int offset)
-    {
+    private GameObject CreateSpike(int x, int y, int z, int length, int offset) {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = new Vector3(x, y - 0.45f, z);
         cube.transform.localScale = new Vector3(1, 0.1f, length);
@@ -115,10 +105,8 @@ public class Level
         return cube;
     }
 
-    private void CreateCoin(int x, int y, int z)
-    {
-        if(coin != null)
-            GameObject.Instantiate(coin, new Vector3(x, y, z), Quaternion.identity);
+    private void CreateCoin(int x, int y, int z) {
+        if (coin != null) Object.Instantiate(coin, new Vector3(x, y, z), Quaternion.identity);
     }
 
     private void CreateWinZome()
@@ -136,15 +124,14 @@ public class Level
         {
             if (platform != null) platform.SetActive(true);
         }
-        foreach (var spike in spikes)
-        {
+
+        foreach (var spike in spikes) {
             if (spike != null) spike.SetActive(true);
         }
         CreateWinZome();
     }
 
-    public GameObject[] GetLevelObjects()
-    {
+    public GameObject[] GetLevelObjects() {
         GameObject[] level = new GameObject[platforms.Length + spikes.Length];
         platforms.CopyTo(level, 0);
         spikes.CopyTo(level, platforms.Length);
