@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour {
     }
 
     private static void LoadLevel(int num) {
+        currentLevel?.Destroy();
         Debug.Log("Loading level " + num);
         currentLevel = levels[num].Build();
     }

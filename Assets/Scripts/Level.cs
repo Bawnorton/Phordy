@@ -79,24 +79,16 @@ public class Level {
     }
     
     private void CreatePlatform(int x, int y, int z, int length, int offset, int version) {
-        switch (version) {
-            case 1 when platform1 != null: {
-                GameObject p1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                p1.transform.position = new Vector3(x, y, z);
-                p1.transform.localScale = new Vector3(1, 1, length);
-                p1.GetComponent<Renderer>().material = platform1;
-                p1.AddComponent<PlatformController>().startZ = offset;
-                break;
-            }
-            case 2 when platform2 != null: {
-                GameObject p2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                p2.transform.position = new Vector3(x, y, z);
-                p2.transform.localScale = new Vector3(1, 1, length);
-                p2.GetComponent<Renderer>().material = platform2;
-                p2.AddComponent<PlatformController>().startZ = offset;
-                break;
-            }
-        }
+        GameObject p = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        p.transform.position = new Vector3(x, y, z);
+        p.transform.localScale = new Vector3(1, 1, length);
+        p.AddComponent<PlatformController>().startZ = offset;
+        p.GetComponent<Renderer>().material = version switch {
+            1 when platform1 != null => platform1,
+            2 when platform2 != null => platform2,
+            _ => p.GetComponent<Renderer>().material
+        };
+        p.tag = "Platform";
     }
 
     private void CreateSpike(int x, int y, int z) {
@@ -123,6 +115,21 @@ public class Level {
             int y = c[1];
             int z = c[2];
             CreateCoin(x, y, z);
+        }
+    }
+
+    public void Destroy() {
+        foreach (GameObject p in GameObject.FindGameObjectsWithTag("Platform")) {
+            Object.Destroy(p);
+        }
+        foreach (GameObject s in GameObject.FindGameObjectsWithTag("Spike")) {
+            Object.Destroy(s);
+        }
+        foreach (GameObject c in GameObject.FindGameObjectsWithTag("Coin")) {
+            Object.Destroy(c);
+        }
+        foreach (GameObject w in GameObject.FindGameObjectsWithTag("WinZone")) {
+            Object.Destroy(w);
         }
     }
 
