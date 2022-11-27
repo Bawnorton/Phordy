@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer == 7) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             ScoreController.score += 1;
             Destroy(collision.gameObject);
         }
