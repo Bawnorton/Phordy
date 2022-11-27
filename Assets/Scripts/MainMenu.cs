@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour {
     [SerializeField] private Slider musicVolume;
     [SerializeField] private Slider FxVolume;
     [SerializeField] private TMP_Dropdown colourCorrection;
+    [SerializeField] private Button resetButton;
     private static AudioMixer mixer;
     private void Awake() {
         mixer = Resources.Load<AudioMixer>("Audio/MainMixer");
@@ -23,6 +24,8 @@ public class MainMenu : MonoBehaviour {
         mixer.SetFloat("Music", Mathf.Log10(SaveData.instance.musicVolume) * 20);
         mixer.SetFloat("Fx", Mathf.Log10(SaveData.instance.sfxVolume) * 20);
         colourCorrection.value = SaveData.instance.colourCorrection; 
+        
+        resetButton.onClick.AddListener(SaveData.instance.Clear);
     }
     public void Play() {
         SceneManager.LoadScene("Scenes/LevelSelect");

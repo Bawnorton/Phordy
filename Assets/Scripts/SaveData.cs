@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveData : MonoBehaviour {
     
@@ -36,5 +38,17 @@ public class SaveData : MonoBehaviour {
         for (int i = 0; i < completedLevels.Length; i++) {
             completedLevels[i] = PlayerPrefs.GetInt("completedLevel" + i);
         }
+    }
+
+    public void Clear() {
+        Debug.Log("Clearing Save Data");
+        musicVolume = 0.5f;
+        sfxVolume = 0.5f;
+        colourCorrection = 0;
+        for (int i = 0; i < completedLevels.Length; i++) {
+            completedLevels[i] = 0;
+        }
+        Save();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
