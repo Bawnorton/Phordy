@@ -5,12 +5,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private new AudioSource audio;
     [SerializeField] private float speed = 6f;
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 7f;
     
     private Vector3 input;
     private bool canCollide = true;
-
-
+    
     private void Update() {
         GatherInput();
         if(Input.GetButtonDown("Jump") && IsGrounded() && !PauseMenu.isPaused) {
@@ -20,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate() {
         Move();
+        FixPosition();
     }
 
     private void GatherInput() {
@@ -32,6 +32,18 @@ public class PlayerController : MonoBehaviour {
         Vector3 result = t.position + speed * Time.deltaTime * (t.forward * input.z + t.right * input.x);
         rb.MovePosition(result);
         canCollide = true;
+    }
+
+    private void FixPosition() {
+        Transform t = transform;
+        Vector3 pos = t.position;
+        float maxZ = 6.2f;
+        float minZ = -6.2f;
+        if (pos.z > maxZ) {
+            t.position = new Vector3(pos.x, pos.y, maxZ);
+        } else if (t.position.z < minZ) {
+            t.position = new Vector3(pos.x, pos.y, minZ);
+        }
     }
     
     private void Jump() {
@@ -51,7 +63,7 @@ public class PlayerController : MonoBehaviour {
             || Physics.Raycast(pos - Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2);
             
     }
-    
+
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             audio.clip = Resources.Load<AudioClip>("Audio/CoinSound");

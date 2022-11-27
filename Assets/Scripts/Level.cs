@@ -170,4 +170,8 @@ public class Level {
             return new Level(width, height, length, platformData, spikeData, coinData);
         }
     }
+
+    public int CoinCount() {
+        return coinData.Count;
+    }
 }
