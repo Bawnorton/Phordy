@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
     
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private AudioSource audio;
     [SerializeField] private float speed = 6f;
     [SerializeField] private float jumpForce = 8f;
     
     private Vector3 input;
     private bool canCollide = true;
-    
+
 
     private void Update() {
         GatherInput();
@@ -54,9 +55,13 @@ public class PlayerController : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Coin")) {
+            audio.clip = Resources.Load<AudioClip>("Audio/CoinSound");
+            audio.Play();
             ScoreController.score += 1;
             Destroy(other.gameObject);
         } else if(other.gameObject.layer == LayerMask.NameToLayer("Spike") && canCollide) {
+            audio.clip = Resources.Load<AudioClip>("Audio/DeathSound");
+            audio.Play();
             rb.transform.position = new Vector3(-5, 1, 0);
             ScoreController.score = 0;
             ScoreController.deaths += 1;
