@@ -5,12 +5,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private new AudioSource audio;
     [SerializeField] private float speed = 6f;
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 7f;
     
     private Vector3 input;
     private bool canCollide = true;
-
-
+    
     private void Update() {
         GatherInput();
         if(Input.GetButtonDown("Jump") && IsGrounded() && !PauseMenu.isPaused) {
