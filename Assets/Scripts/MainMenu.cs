@@ -8,10 +8,17 @@ public class MainMenu : MonoBehaviour {
 
     [SerializeField] private Slider musicVolume;
     [SerializeField] private Slider FxVolume;
-    private AudioMixer mixer;
-    private void Awake()
-    {
+    private static AudioMixer mixer;
+    private void Awake() {
         mixer = Resources.Load<AudioMixer>("Audio/MainMixer");
+        SaveData.instance.Load();
+        musicVolume.value = SaveData.instance.musicVolume;
+        FxVolume.value = SaveData.instance.sfxVolume;
+    }
+
+    public void Start() {
+        mixer.SetFloat("Music", Mathf.Log10(SaveData.instance.musicVolume) * 20);
+        mixer.SetFloat("Fx", Mathf.Log10(SaveData.instance.sfxVolume) * 20);
     }
     public void Play() {
         SceneManager.LoadScene("Scenes/LevelSelect");
@@ -22,13 +29,16 @@ public class MainMenu : MonoBehaviour {
         Application.Quit();
     }
 
-
-    public void SetMusicVolume()
-    {
-        mixer.SetFloat("Music",musicVolume.value);
+    public void SetMusicVolume() {
+        mixer.SetFloat("Music", Mathf.Log10(musicVolume.value) * 20);
+        SaveData.instance.musicVolume = musicVolume.value;
     }
-    public void SetFxVolume()
-    {
-        mixer.SetFloat("Fx", FxVolume.value);
+    public void SetFxVolume() {
+        mixer.SetFloat("Fx", Mathf.Log10(FxVolume.value) * 20);
+        SaveData.instance.sfxVolume = FxVolume.value;
+    }
+
+    public void SaveOptions() {
+        SaveData.instance.Save();
     }
 }

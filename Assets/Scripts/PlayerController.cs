@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
     
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private AudioSource audio;
+    [SerializeField] private new AudioSource audio;
     [SerializeField] private float speed = 6f;
     [SerializeField] private float jumpForce = 8f;
     
@@ -15,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         GatherInput();
-        if(Input.GetButtonDown("Jump") && IsGrounded()) {
+        if(Input.GetButtonDown("Jump") && IsGrounded() && !PauseMenu.isPaused) {
             Jump();
         }
     }
@@ -29,6 +27,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Move() {
+        if (PauseMenu.isPaused) return;
         Transform t = transform;
         Vector3 result = t.position + speed * Time.deltaTime * (t.forward * input.z + t.right * input.x);
         rb.MovePosition(result);

@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
+    [SerializeField] private GameObject pauseMenu;
+    private PauseMenu pauseMenuScript;
+    
     private int maxZ;
     private int minZ;
     
@@ -14,6 +16,7 @@ public class GameController : MonoBehaviour
     public static Level currentLevel;
     private void Start() {
         int loadedLevel = LevelSelectMenu.num;
+        pauseMenuScript = pauseMenu.GetComponent<PauseMenu>();
         ScoreController.score = 0;
         ScoreController.deaths = 0;
         
@@ -56,5 +59,20 @@ public class GameController : MonoBehaviour
     public static void LoadLevel(int num) {
         currentLevel = levels[num];
         currentLevel.ActivateLevel();
+    }
+    
+    // key handler
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            LoadLevel(LevelSelectMenu.num);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (PauseMenu.isPaused) {
+                pauseMenuScript.Back();
+            }
+            else {
+                pauseMenuScript.Pause();
+            }
+        }
     }
 }
