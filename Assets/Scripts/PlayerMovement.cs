@@ -3,21 +3,14 @@ using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
-    [SerializeField]
-    private float SPEED = 5f;
+    [SerializeField] private float SPEED = 5f;
 
     private Rigidbody rb;
 
     private bool canJump;
 
-    [Header("Player Stats")]
-    public int coins = 0;
-    
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private Transform groundCheck;
+    [Header("Player Stats")] public int coins = 0;
 
-    private Rigidbody rb;
-    
     private void Start() {
         rb = GetComponent<Rigidbody>();
         canJump = true;
@@ -27,10 +20,9 @@ public class PlayerMovement : MonoBehaviour {
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         var velocity = rb.velocity;
-        
+
         rb.velocity = new Vector3(horizontal * SPEED, velocity.y, vertical * SPEED);
-        if (Input.GetButton("Jump") && canJump)
-        {
+        if (Input.GetButton("Jump") && canJump) {
             canJump = false;
             rb.velocity = new Vector3(velocity.x, SPEED, velocity.z);
         }
@@ -40,13 +32,11 @@ public class PlayerMovement : MonoBehaviour {
     }
 
 
-    private void OnCollisionEnter(Collision collision)
-    {
+    private void OnCollisionEnter(Collision collision) {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
             Death();
 
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin"))
-        {
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             Destroy(collision.collider.gameObject);
             coins++;
         }
@@ -54,8 +44,7 @@ public class PlayerMovement : MonoBehaviour {
             canJump = true;
     }
 
-    private void Death()
-    {
+    private void Death() {
         gameObject.GetComponent<Renderer>().enabled = false;
         gameObject.GetComponent<UIController>().playerDeath();
     }
