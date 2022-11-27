@@ -3,7 +3,8 @@ using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
-    private const float SPEED = 5f;
+    [SerializeField]
+    private float SPEED = 5f;
 
     private Rigidbody rb;
 
@@ -34,11 +35,6 @@ public class PlayerMovement : MonoBehaviour {
         GameController.floor.transform.position = new Vector3(floorPos.x, floorPos.y, rb.position.z);
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if(collision.collider.gameObject.layer != LayerMask.NameToLayer("Coin"))
-            canJump = false;
-    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
