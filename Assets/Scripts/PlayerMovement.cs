@@ -3,6 +3,13 @@ using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
+    [SerializeField]
+    private float SPEED = 5f;
+
+    private Rigidbody rb;
+
+    private bool canJump;
+
     [Header("Player Stats")]
     public int coins = 0;
     
@@ -13,29 +20,43 @@ public class PlayerMovement : MonoBehaviour {
     
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        canJump = true;
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         var velocity = rb.velocity;
         
-        rb.velocity = new Vector3(horizontal * speed, velocity.y, vertical * speed);
-        if (Input.GetButtonDown("Jump") && IsGrounded()) {
-            rb.velocity = new Vector3(velocity.x, speed, velocity.z);
+        rb.velocity = new Vector3(horizontal * SPEED, velocity.y, vertical * SPEED);
+        if (Input.GetButton("Jump") && canJump)
+        {
+            canJump = false;
+            rb.velocity = new Vector3(velocity.x, SPEED, velocity.z);
         }
 
         var floorPos = GameController.floor.transform.position;
         GameController.floor.transform.position = new Vector3(floorPos.x, floorPos.y, rb.position.z);
     }
 
-    private bool IsGrounded() {
-        Vector3 pos = groundCheck.position;
-        Vector3 localScale = transform.localScale;
-        pos.x += localScale.x / 2 - 0.1f;
-        bool front = Physics.Raycast(pos, Vector3.down, 0.1f);
-        pos.x -= localScale.x - 0.2f;
-        bool back = Physics.Raycast(pos, Vector3.down, 0.1f);
-        return front || back;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
+            Death();
+
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin"))
+        {
+            Destroy(collision.collider.gameObject);
+            coins++;
+        }
+        else
+            canJump = true;
+    }
+
+    private void Death()
+    {
+        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.GetComponent<UIController>().playerDeath();
     }
 }
