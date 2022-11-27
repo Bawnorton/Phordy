@@ -104,7 +104,8 @@ public class Level {
     }
 
     private void CreateSpike(int x, int y, int z) {
-        if (spike != null) Object.Instantiate(spike, new Vector3(x, y - 0.16f, z), Quaternion.identity);
+        if (spike == null) return;
+        Object.Instantiate(spike, new Vector3(x, y - 0.16f, z), Quaternion.identity);
     }
 
     private void CreateCoin(int x, int y, int z) {
