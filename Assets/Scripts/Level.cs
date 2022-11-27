@@ -108,7 +108,7 @@ public class Level {
         cube.GetComponent<PlatformController>().startZ = offset;
         cube.GetComponent<Renderer>().material = spikeMaterial;
         cube.GetComponent<BoxCollider>().isTrigger = true;
-        cube.name = "Spike";
+        cube.layer = LayerMask.NameToLayer("Spike");
         cube.SetActive(false);
         return cube;
     }

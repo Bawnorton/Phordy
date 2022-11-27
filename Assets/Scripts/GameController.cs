@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     private void Start() {
         int loadedLevel = LevelSelectMenu.num;
         ScoreController.score = 0;
+        ScoreController.deaths = 0;
         
         maxZ = (int)GameObject.Find("Backwall").transform.position.z;
         minZ = (int)GameObject.Find("Frontwall").transform.position.z;
