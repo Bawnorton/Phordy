@@ -11,6 +11,7 @@ TagManager:
   - MonsterLayer
   - Water
   - UI
+  - PlayerLayer
   - Coin
   - 
   - 

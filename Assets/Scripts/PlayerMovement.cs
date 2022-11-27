@@ -12,8 +12,12 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header("Player Stats")]
     public int coins = 0;
+    
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private Transform groundCheck;
 
-
+    private Rigidbody rb;
+    
     private void Start() {
         rb = GetComponent<Rigidbody>();
         canJump = true;
@@ -35,6 +39,7 @@ public class PlayerMovement : MonoBehaviour {
         GameController.floor.transform.position = new Vector3(floorPos.x, floorPos.y, rb.position.z);
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
@@ -54,5 +59,4 @@ public class PlayerMovement : MonoBehaviour {
         gameObject.GetComponent<Renderer>().enabled = false;
         gameObject.GetComponent<UIController>().playerDeath();
     }
-
 }
