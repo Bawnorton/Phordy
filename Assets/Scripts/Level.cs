@@ -98,7 +98,10 @@ public class Level {
         }
     }
     
-    public Vector3 GetLevelSize() {
-        return new Vector3(levelWidth, levelHeight, levelLength);
+    public GameObject[] GetLevelObjects() {
+        GameObject[] level = new GameObject[platforms.Length + spikes.Length];
+        platforms.CopyTo(level, 0);
+        spikes.CopyTo(level, platforms.Length);
+        return level;
     }
 }
