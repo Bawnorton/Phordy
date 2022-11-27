@@ -1,51 +1,68 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 
 public class PlayerMovement : MonoBehaviour {
-    [SerializeField] private float SPEED = 5f;
+    
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private float jumpForce = 8f;
+    
+    private Vector3 input;
 
-    private Rigidbody rb;
-
-    private bool canJump;
-
-    [Header("Player Stats")] public int coins = 0;
-
-    private void Start() {
-        rb = GetComponent<Rigidbody>();
-        canJump = true;
+    private void Update() {
+        GatherInput();
+        if(Input.GetButtonDown("Jump") && IsGrounded()) {
+            Jump();
+        }
     }
 
     private void FixedUpdate() {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
-        var velocity = rb.velocity;
-
-        rb.velocity = new Vector3(horizontal * SPEED, velocity.y, vertical * SPEED);
-        if (Input.GetButton("Jump") && canJump) {
-            canJump = false;
-            rb.velocity = new Vector3(velocity.x, SPEED, velocity.z);
-        }
-
-        var floorPos = GameController.floor.transform.position;
-        GameController.floor.transform.position = new Vector3(floorPos.x, floorPos.y, rb.position.z);
+        Move();
     }
 
+    private void GatherInput() {
+        input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+    }
+
+    private void Move() {
+        Transform t = transform;
+        Vector3 result = t.position + speed * Time.deltaTime * (t.forward * input.z + t.right * input.x);
+        rb.MovePosition(result);
+    }
+    
+    private void Jump() {
+        rb.velocity = Vector3.up * jumpForce;
+    }
+    
+    private bool IsGrounded() {
+        Transform t = transform;
+        Vector3 pos = t.position;
+        Vector3 scale = t.localScale;
+        float height = scale.y;
+        float width = scale.x;
+        return Physics.Raycast(pos, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos + Vector3.right * height / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos - Vector3.right * width / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos + Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2)
+            || Physics.Raycast(pos - Vector3.forward * width / 2, Vector3.down, 0.1f + height / 2);
+            
+    }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("MonsterLayer"))
-            Death();
-
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Coin")) {
-            Destroy(collision.collider.gameObject);
-            coins++;
+        if (collision.gameObject.layer == 7) {
+            ScoreController.score += 1;
+            Destroy(collision.gameObject);
         }
-        else
-            canJump = true;
     }
 
-    private void Death() {
-        gameObject.GetComponent<Renderer>().enabled = false;
-        gameObject.GetComponent<UIController>().playerDeath();
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Coin"))
+        {
+            Destroy(other.gameObject);
+            coins++;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 // levelString is a string of 0s and 1s, with 0s being spikes and 1s being platforms
 // first characters are a|b|c| where a is an integer representing the width, b, height, and c, length of the level
@@ -13,17 +14,23 @@ using UnityEngine;
 // example a 2x2x2 cube of platforms would be represented as "2|2|2|1[0,0,0,1,0].1[1,0,0,1,0].1[0,1,0,1,0].1[1,1,0,1,0].1[0,0,1,1,0].1[1,0,1,1,0].1[0,1,1,1,0].1[1,1,1,1,0]."
 // example a 2x2x2 cube of spikes would be represented as "2|2|2|0[0,0,0,1,0].0[1,0,0,1,0].0[0,1,0,1,0].0[1,1,0,1,0].0[0,0,1,1,0].0[1,0,1,1,0].0[0,1,1,1,0].0[1,1,1,1,0]."
 // the last character is a period, which is ignored
+//
+//COINS: use 2 followed by [x,y,z,a,b] for coins. Values a, b are ignored but still need to be present for formatting.
 public class Level {
     // 3d array of tiles
     private GameObject[] platforms;
     private GameObject[] spikes;
-    
+
     private int levelWidth;
     private int levelHeight;
     private int levelLength;
-    
+
     private readonly Material platformMaterial = GameObject.Find("Platform").GetComponent<Renderer>().material;
     private readonly Material spikeMaterial = GameObject.Find("Spike").GetComponent<Renderer>().material;
+
+    //prefabs
+    private readonly GameObject coin;
+    private readonly GameObject winZone;
 
     private void Init(int w, int h, int l, string levelString) {
         levelWidth = w;
@@ -31,6 +38,7 @@ public class Level {
         levelLength = l;
         platforms = new GameObject[levelWidth * levelHeight * levelLength];
         spikes = new GameObject[levelWidth * levelHeight * levelLength];
+
         // get the level data
         string[] levelData = levelString.Split('.');
         for (int i = 0; i < levelData.Length; i++) {
@@ -48,6 +56,9 @@ public class Level {
                 else if (type == "0") {
                     spikes[i] = CreateSpike(x, y, z, length, offset);
                 }
+                else if (type == "2") {
+                    CreateCoin(x, y, z);
+                }
             }
             catch (FormatException) {
                 Debug.Log("Level data is not formatted correctly");
@@ -55,15 +66,20 @@ public class Level {
             }
         }
     }
+
     public Level(string levelString) {
+        coin = Resources.Load<GameObject>("Prefabs/Coin");
+        winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         string[] levelDimensions = levelString.Split('|');
         int w = int.Parse(levelDimensions[0]);
         int h = int.Parse(levelDimensions[1]);
         int l = int.Parse(levelDimensions[2]);
         Init(w, h, l, levelDimensions[3]);
     }
-    
+
     public Level(int w, int h, int l, string levelString) {
+        coin = Resources.Load<GameObject>("Prefabs/Coin");
+        winZone = Resources.Load<GameObject>("Prefabs/WinZone");
         Init(w, h, l, levelString);
     }
 
@@ -77,7 +93,7 @@ public class Level {
         cube.SetActive(false);
         return cube;
     }
-    
+
     private GameObject CreateSpike(int x, int y, int z, int length, int offset) {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = new Vector3(x, y - 0.45f, z);
@@ -89,15 +105,32 @@ public class Level {
         return cube;
     }
 
-    public void GenerateLevel() {
-        foreach (var platform in platforms) {
-            if(platform != null) platform.SetActive(true);
-        }
-        foreach (var spike in spikes) {
-            if(spike != null) spike.SetActive(true);
+    private void CreateCoin(int x, int y, int z) {
+        if (coin != null) Object.Instantiate(coin, new Vector3(x, y, z), Quaternion.identity);
+    }
+
+    private void CreateWinZome()
+    {
+        if(winZone != null)
+        {
+            GameObject obj = GameObject.Instantiate(winZone, new Vector3(levelLength, 0, 0), Quaternion.identity);
+            obj.transform.localScale = new Vector3(1,30,levelWidth);
         }
     }
-    
+
+    public void GenerateLevel()
+    {
+        foreach (var platform in platforms)
+        {
+            if (platform != null) platform.SetActive(true);
+        }
+
+        foreach (var spike in spikes) {
+            if (spike != null) spike.SetActive(true);
+        }
+        CreateWinZome();
+    }
+
     public GameObject[] GetLevelObjects() {
         GameObject[] level = new GameObject[platforms.Length + spikes.Length];
         platforms.CopyTo(level, 0);
